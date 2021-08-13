@@ -101,9 +101,27 @@ pB <- ggplot(plot.comp.regional, aes(x=DATE, y=bio, fill=VARIABLE_NAME)) +
   labs(title="(B) Metacommunity") +
   theme_bw() + gg_theme
 
-#### Compute metacommunity variability ####
+#### Partition variability across spatial scales ####
+# partition aggregate and compositional variability across spatial scales
+# using local function space_stab()
 res <- space_stab(Y, s, t)
 mult <- melt(res)
+
+# alternatively we can use the R package ltmc
+# library(devtools); devtools::install_github("sokole/ltermetacommunities/ltmc")
+# library(ltmc)
+# ltmc::metacommunity_variability(
+#   data_wide=sbc.wide.algae,
+#   site_id_col_name="SITE_ID",
+#   time_step_col_name="DATE",
+#   variability_type="agg")
+# ltmc::metacommunity_variability(
+#   data_wide = sbc.wide.algae,
+#   site_id_col_name="SITE_ID",
+#   time_step_col_name="DATE",
+#   variability_type="comm")
+
+# plot
 pC <- 
 ggplot(mult, aes(x=factor(variable), y=value, fill=factor(variable))) + geom_bar(stat="identity", color="black") +
   geom_text(aes(label=round(value,3)), vjust=-0.3, size=2.5) +
